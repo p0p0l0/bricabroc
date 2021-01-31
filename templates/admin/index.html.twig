@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+Salut la commu, on crée un nouveau produit
+<a href="{{path('admin_create')}}">
+    <button class="btn btn-primary" type="button">
+        <i class="fa fa-plus"></i>
+    </button>
+</a>
+{% endblock %}
