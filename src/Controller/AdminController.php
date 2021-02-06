@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\UserRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,17 +17,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/index", name="index")
+     * @Route("/product", name="productList")
      */
-    public function index(): Response
+    public function index(ProductRepository $pr): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $products = $pr->findAll();
+        return $this->render('admin/productList.html.twig', [
+            'products' => $products,
         ]);
     }
 
     /**
-     * @Route("/create", name="create")
+     * @Route("/create", name="createProduct")
      */
     public function create(EntityManagerInterface $em, Request $request){
 
@@ -38,12 +41,38 @@ class AdminController extends AbstractController
             $em->persist($product);
             $em->flush();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('admin_updateProduct',[
+                'productId'=>$product->getId()
+            ]);
         }
 
         return $this->render('admin/create.html.twig',[
             'form'=>$form->createView()
         ]);
+
+    }
+
+    /**
+     * @Route("/{productId}/update", name="updateProduct" ,requirements={"productId" ="\d+"})
+     */
+    public function updateProduct(EntityManagerInterface $em, ProductRepository $pr, Request $request, $productId){
+
+        $product = $pr->find($productId);
+
+        $form = $this->createForm(ProductType::class,$product);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->flush();
+
+            return $this->redirectToRoute('product_show',[
+                'productId'=>$productId
+            ]);
+        }
+
+        return $this->render('admin/create.html.twig',[
+            'form'=>$form->createView()
+        ]);
+
 
     }
 }

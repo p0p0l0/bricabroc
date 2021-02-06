@@ -15,7 +15,9 @@
             label: 'Password'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
-
+        
         <button type="submit" class="btn">Register</button>
+        <input type="hidden" name="_target_path" value="{{ path('account') }}"/>
+        <input type="submit" name="login"/>
     {{ form_end(registrationForm) }}
 {% endblock %}

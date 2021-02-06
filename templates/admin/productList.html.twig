@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+
+
+{% block body %}
+
+<div class="mt-2">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Products</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Utilisateurs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+    </ul>
+
+    <div class="row">
+        <button class="my-3">
+            <a href="{{path('admin_createProduct')}}">
+                Nouveau produit<i class="fa fa-plus"></i>
+            </a>
+        </button>
+    </div>
+
+    <table class=" table mt-2">
+        <thead>
+            <th>Name</th>
+            <th>Desciption</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr class="mt-5">
+                <td>{{product.name | slice(0,20)}}</td>
+                <td>{{product.description | slice(0,20)}}</td>
+                <td><button>
+                    <a href="{{path('admin_updateProduct',{'productId':product.id})}}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

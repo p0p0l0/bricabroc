@@ -19,7 +19,10 @@ class ProductType extends AbstractType
                 'label'=>'Nom'
             ])
             ->add('description',TextareaType::class,[
-                'label'=>'Description'
+                'label'=>'Description',
+                'attr'=>[
+                    'rows'=> 15
+                ]
             ])
             ->add('Submit',SubmitType::class)
         ;

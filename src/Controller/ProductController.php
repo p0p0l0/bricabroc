@@ -14,7 +14,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{productId}", name="show" , requirements={"productId"="\d+"})
      */
-    public function index(ProductRepository $pr, $productId): Response
+    public function show(ProductRepository $pr, $productId): Response
     {
         $product = $pr->find($productId);
 
@@ -23,4 +23,6 @@ class ProductController extends AbstractController
             'product'=>$product
         ]);
     }
+
+    
 }
