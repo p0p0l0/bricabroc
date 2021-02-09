@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link " href="{{path('admin_productList')}}">Products</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{path('admin_userList')}}">Utilisateurs</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+</ul>
+
+<table class=" table mt-2">
+    <thead>
+        <th>Email</th>
+        <th>Role</th>
+
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr class="mt-5">
+            <td>{{user.email}}</td>
+            <td>{% for role in user.roles %}
+                    {{role}}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

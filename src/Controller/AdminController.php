@@ -19,7 +19,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/product", name="productList")
      */
-    public function index(ProductRepository $pr): Response
+    public function productList(ProductRepository $pr): Response
     {
         $products = $pr->findAll();
         return $this->render('admin/productList.html.twig', [
@@ -41,6 +41,11 @@ class AdminController extends AbstractController
             $em->persist($product);
             $em->flush();
 
+            $this->addFlash(
+                "success",
+                $product->getName()." a été ajouté(e) avec succès"
+            );
+
             return $this->redirectToRoute('admin_updateProduct',[
                 'productId'=>$product->getId()
             ]);
@@ -59,10 +64,24 @@ class AdminController extends AbstractController
 
         $product = $pr->find($productId);
 
+        if(!$product){
+            $this->addFlash(
+            "warning",
+            "Le produit n'existe pas"
+        );
+
+        return $this->redirectToRoute('admin/productList.html.twig');
+        }   
+
         $form = $this->createForm(ProductType::class,$product);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->flush();
+
+            $this->addFlash(
+                "success",
+                $product->getName()." a été modifié(e) avec succès"
+            );
 
             return $this->redirectToRoute('product_show',[
                 'productId'=>$productId
@@ -74,5 +93,17 @@ class AdminController extends AbstractController
         ]);
 
 
+    }
+
+    /**
+     * @Route("/user", name="userList")
+     */
+    public function userList(UserRepository $ur){
+
+        $users = $ur->findAll();
+
+        return $this->render('admin/userList.html.twig',[
+            'users'=> $users
+        ]);
     }
 }
